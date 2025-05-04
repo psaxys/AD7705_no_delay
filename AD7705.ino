@@ -1,48 +1,39 @@
-// liman324@yandex.ru
-// Alexander Liman
-// rcl-radio.ru
-
 #include <SPI.h>
 #include <AD7705.h>
-AD7705 ad(8,7);// DRDY,RESET
-// SS    10 // CS
-// MOSI  11 // DIN
-// MISO  12 // DOUT
-// SCK   13 // SCLK
+AD7705 ad(2, 3);// DRDY pin, RESET pin
+
+// SS    7 // CS
+// MOSI  6 // DIN
+// MISO  5 // DOUT
+// SCK   4 // SCLK
 
 long data;
+unsigned long previousMillis = 0;
+const long interval = 1000; // интервал между измерениями (мс)
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   ad.conf();
   delay(500);
 }
 
 void loop() {
-  // CH1 = 1/CH2 = 2
-  // GAIN = 1,2,4,8,16,32,64,128
-  // RATE = 20,25,100,200 Hz
-  // UNIPOLAR = 0/BIPOLAR = 1 
+  unsigned long currentMillis = millis();
 
-  ad.setSetup(1,1,25,0);
-  data = ad.read_unipolar();
-  Serial.print("CH1 ");Serial.print(data);
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
 
-  ad.setSetup(2,1,25,0);
-  data = ad.read_unipolar();
-  Serial.print("  CH2 ");Serial.println(data);
+    // CH1 = 1/CH2 = 2
+    // GAIN = 1,2,4,8,16,32,64,128
+    // RATE = 20,25,100,200 Hz
+    // UNIPOLAR = 0/BIPOLAR = 1 
 
-  delay(1000);
+    ad.setSetup(1,1,25,0);
+    data = ad.read_unipolar();
+    Serial.print("Сhannel 1 >> ");Serial.println(data);
+
+   /* ad.setSetup(2,1,25,0);
+    data = ad.read_unipolar();
+    Serial.print("  Сhannel 2 >>  ");Serial.println(data); */
+  }
 }
-
-/****CH1,GAIN1,25Hz,bipolar*****
- ad.setSetup(1,1,25,1);
- data = ad.read_bipolar();
- // long data = -32768...32767 = -2.5...+2.5 V
- */
-
-/****CH1,GAIN1,25Hz,unipolar*****
- ad.setSetup(1,1,25,0);
- data = ad.read_unipolar();
- // long data = 0...65535  = 0...+5 V
- */
