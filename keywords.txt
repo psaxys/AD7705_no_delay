@@ -1,0 +1,6 @@
+AD7705  KEYWORD1
+Color  KEYWORD1
+setColor  KEYWORD2
+setBright  KEYWORD2
+getColor  KEYWORD2
+getBright  KEYWORD2
