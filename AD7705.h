@@ -17,4 +17,4 @@ class AD7705
         uint8_t RESET;
 };
 	
-#endif //AD7705_H
+#endif
