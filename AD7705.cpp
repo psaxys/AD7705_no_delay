@@ -5,7 +5,7 @@
 void nonBlockingDelay(unsigned long ms) {
     unsigned long start = millis();
     while (millis() - start < ms) {
-        yield();
+        yield(); //Желательно для ESP32
     }
 }
 
